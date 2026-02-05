@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model projectgroup {
+  ProjectGroupID                            Int                        @id @default(autoincrement())
+  ProjectGroupName                          String                     @db.VarChar(150)
+  ProjectTypeID                             Int
+  GuideStaffName                            String?                    @db.VarChar(150)
+  ProjectTitle                              String                     @db.VarChar(200)
+  ProjectArea                               String?                    @db.VarChar(100)
+  ProjectDescription                        String?                    @db.Text
+  ProjectStatus                             projectgroup_ProjectStatus @default(PROPOSED)
+  AverageCPI                                Decimal?                   @db.Decimal(4, 2)
+  ConvenerStaffID                           Int?
+  ExpertStaffID                             Int?
+  Description                               String?                    @db.Text
+  Created                                   DateTime?                  @default(now()) @db.DateTime(0)
+  Modified                                  DateTime?                  @db.DateTime(0)
+  projecttype                               projecttype                @relation(fields: [ProjectTypeID], references: [ProjectTypeID], onUpdate: Restrict, map: "projectgroup_ibfk_1")
+  staff_projectgroup_ConvenerStaffIDTostaff staff?                     @relation("projectgroup_ConvenerStaffIDTostaff", fields: [ConvenerStaffID], references: [StaffID], onDelete: Restrict, onUpdate: Restrict, map: "projectgroup_ibfk_2")
+  staff_projectgroup_ExpertStaffIDTostaff   staff?                     @relation("projectgroup_ExpertStaffIDTostaff", fields: [ExpertStaffID], references: [StaffID], onDelete: Restrict, onUpdate: Restrict, map: "projectgroup_ibfk_3")
+  projectgroupmember                        projectgroupmember[]
+  projectmeeting                            projectmeeting[]
+
+  @@index([ConvenerStaffID], map: "ConvenerStaffID")
+  @@index([ExpertStaffID], map: "ExpertStaffID")
+  @@index([ProjectTypeID], map: "ProjectTypeID")
+}
+
+model projectgroupmember {
+  ProjectGroupMemberID Int          @id @default(autoincrement())
+  ProjectGroupID       Int
+  StudentID            Int
+  IsGroupLeader        Boolean?     @default(false)
+  StudentCGPA          Decimal?     @db.Decimal(4, 2)
+  Description          String?      @db.Text
+  Created              DateTime?    @default(now()) @db.DateTime(0)
+  Modified             DateTime?    @db.DateTime(0)
+  projectgroup         projectgroup @relation(fields: [ProjectGroupID], references: [ProjectGroupID], onDelete: Cascade, map: "projectgroupmember_ibfk_1")
+  student              student      @relation(fields: [StudentID], references: [StudentID], onUpdate: Restrict, map: "projectgroupmember_ibfk_2")
+
+  @@unique([ProjectGroupID, StudentID], map: "ProjectGroupID")
+  @@index([StudentID], map: "StudentID")
+}
+
+model projectmeeting {
+  ProjectMeetingID         Int                        @id @default(autoincrement())
+  ProjectGroupID           Int
+  GuideStaffID             Int
+  MeetingDateTime          DateTime                   @db.DateTime(0)
+  MeetingPurpose           String?                    @db.VarChar(200)
+  MeetingLocation          String?                    @db.VarChar(150)
+  MeetingNotes             String?                    @db.Text
+  MeetingStatus            String?                    @db.VarChar(50)
+  MeetingStatusDescription String?                    @db.Text
+  MeetingStatusDatetime    DateTime?                  @db.DateTime(0)
+  Description              String?                    @db.Text
+  Created                  DateTime?                  @default(now()) @db.DateTime(0)
+  Modified                 DateTime?                  @db.DateTime(0)
+  projectgroup             projectgroup               @relation(fields: [ProjectGroupID], references: [ProjectGroupID], onDelete: Cascade, map: "projectmeeting_ibfk_1")
+  staff                    staff                      @relation(fields: [GuideStaffID], references: [StaffID], onUpdate: Restrict, map: "projectmeeting_ibfk_2")
+  projectmeetingattendance projectmeetingattendance[]
+
+  @@index([GuideStaffID], map: "GuideStaffID")
+  @@index([ProjectGroupID], map: "ProjectGroupID")
+}
+
+model projectmeetingattendance {
+  ProjectMeetingAttendanceID Int            @id @default(autoincrement())
+  ProjectMeetingID           Int
+  StudentID                  Int
+  IsPresent                  Boolean?       @default(true)
+  AttendanceRemarks          String?        @db.VarChar(100)
+  Description                String?        @db.Text
+  Created                    DateTime?      @default(now()) @db.DateTime(0)
+  Modified                   DateTime?      @db.DateTime(0)
+  projectmeeting             projectmeeting @relation(fields: [ProjectMeetingID], references: [ProjectMeetingID], onDelete: Cascade, map: "projectmeetingattendance_ibfk_1")
+  student                    student        @relation(fields: [StudentID], references: [StudentID], onUpdate: Restrict, map: "projectmeetingattendance_ibfk_2")
+
+  @@unique([ProjectMeetingID, StudentID], map: "ProjectMeetingID")
+  @@index([StudentID], map: "StudentID")
+}
+
+model projecttype {
+  ProjectTypeID   Int            @id @default(autoincrement())
+  ProjectTypeName String         @db.VarChar(100)
+  Description     String?        @db.Text
+  Created         DateTime?      @default(now()) @db.DateTime(0)
+  Modified        DateTime?      @db.DateTime(0)
+  projectgroup    projectgroup[]
+}
+
+model staff {
+  StaffID                                          Int              @id @default(autoincrement())
+  StaffName                                        String           @db.VarChar(150)
+  Phone                                            String?          @db.VarChar(20)
+  Email                                            String?          @unique(map: "Email") @db.VarChar(150)
+  role                                             staff_role?
+  Description                                      String?          @db.Text
+  Created                                          DateTime?        @default(now()) @db.DateTime(0)
+  Modified                                         DateTime?        @db.DateTime(0)
+  Password                                         String?          @db.VarChar(10)
+  projectgroup_projectgroup_ConvenerStaffIDTostaff projectgroup[]   @relation("projectgroup_ConvenerStaffIDTostaff")
+  projectgroup_projectgroup_ExpertStaffIDTostaff   projectgroup[]   @relation("projectgroup_ExpertStaffIDTostaff")
+  projectmeeting                                   projectmeeting[]
+}
+
+model student {
+  StudentID                Int                        @id @default(autoincrement())
+  StudentName              String                     @db.VarChar(150)
+  EnrollmentNo             String                     @unique(map: "EnrollmentNo") @db.VarChar(20)
+  Phone                    String?                    @db.VarChar(20)
+  Email                    String?                    @unique(map: "Email") @db.VarChar(150)
+  Description              String?                    @db.Text
+  Created                  DateTime?                  @default(now()) @db.DateTime(0)
+  Modified                 DateTime?                  @db.DateTime(0)
+  Password                 String?                    @db.VarChar(10)
+  projectgroupmember       projectgroupmember[]
+  projectmeetingattendance projectmeetingattendance[]
+}
+
+enum projectgroup_ProjectStatus {
+  PROPOSED
+  APPROVED
+  ONGOING
+  COMPLETED
+  REJECTED
+}
+
+enum staff_role {
+  admin
+  faculty
+}
