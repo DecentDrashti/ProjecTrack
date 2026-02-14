@@ -1,8 +1,8 @@
-import { AddStudentAction } from '@/app/action/AddStudentAction';
+import { AddAdminAction } from '@/app/action/AddAdminAction';
 import React from 'react';
 import Link from 'next/link';
 
-export default function AddStudent() {
+export default function AddAdmin() {
   return (
     <div className="min-h-screen relative overflow-hidden font-sans pb-20 flex items-center justify-center p-6">
       {/* Background Blobs - matching the "liquid glass" theme from list pages */}
@@ -31,37 +31,36 @@ export default function AddStudent() {
 
           {/* Header */}
           <div className="mb-10 text-center">
-            <h1 className="text-4xl font-black text-[#201E43] tracking-tight mb-2">Add New Student</h1>
-            <p className="text-[#201E43]/60 font-medium">Create a new student record in the system</p>
+            <h1 className="text-4xl font-black text-[#201E43] tracking-tight mb-2">Add New Faculty</h1>
+            <p className="text-[#201E43]/60 font-medium">Create a new faculty record in the system</p>
           </div>
 
           {/* Form */}
-          <form action={AddStudentAction} className="space-y-6">
+          <form action={AddAdminAction} className="space-y-6">
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Student Name */}
+              <input type="hidden" name="role" value="ADMIN" />
+
+              {/* Admin Name */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black text-[#201E43]/60 uppercase tracking-[0.2em] ml-1">
-                  Student Name
+                  Admin Name
                 </label>
                 <input
                   type="text"
-                  name="StudentName"
+                  name="AdminName"
                   placeholder="John Doe"
                   className="w-full px-5 py-4 bg-white/60 border border-white/80 rounded-2xl text-sm font-bold text-[#201E43] placeholder:text-[#201E43]/30 focus:outline-none focus:ring-4 focus:ring-[#201E43]/5 focus:border-[#201E43]/20 transition-all duration-300 shadow-sm"
                   required
                 />
               </div>
-
-              {/* Enrollment Number */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black text-[#201E43]/60 uppercase tracking-[0.2em] ml-1">
-                  Enrollment Number
-                </label>
+                  Password</label>
                 <input
-                  type="text"
-                  name="EnrollmentNo"
-                  placeholder="21CE012"
+                  type="password"
+                  name="Password"
+                  placeholder="••••••••"
                   className="w-full px-5 py-4 bg-white/60 border border-white/80 rounded-2xl text-sm font-bold text-[#201E43] placeholder:text-[#201E43]/30 focus:outline-none focus:ring-4 focus:ring-[#201E43]/5 focus:border-[#201E43]/20 transition-all duration-300 shadow-sm"
                   required
                 />
@@ -111,7 +110,7 @@ export default function AddStudent() {
             </div>
 
             {/* Password */}
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <label className="text-[10px] font-black text-[#201E43]/60 uppercase tracking-[0.2em] ml-1">
                 Password
               </label>
@@ -122,7 +121,7 @@ export default function AddStudent() {
                 className="w-full px-5 py-4 bg-white/60 border border-white/80 rounded-2xl text-sm font-bold text-[#201E43] placeholder:text-[#201E43]/30 focus:outline-none focus:ring-4 focus:ring-[#201E43]/5 focus:border-[#201E43]/20 transition-all duration-300 shadow-sm"
                 required
               />
-            </div>
+            </div> */}
 
             {/* Submit Button */}
             <button
@@ -133,20 +132,20 @@ export default function AddStudent() {
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
-              Add Student
+              Add Admin
             </button>
           </form>
 
           {/* Back Action */}
           <div className="mt-10 text-center">
             <Link
-              href="/admin/students"
+              href="/admin/adminlist"
               className="inline-flex items-center gap-2 text-[10px] font-black text-[#201E43]/40 uppercase tracking-widest hover:text-[#201E43] transition-colors duration-300"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                 <path d="m15 18-6-6 6-6" />
               </svg>
-              Back to Students List
+              Back to Admin List
             </Link>
           </div>
         </div>
@@ -154,4 +153,3 @@ export default function AddStudent() {
     </div>
   );
 }
-

@@ -52,7 +52,7 @@ export default async function StudentList() {
                                     <tr className="bg-[#201E43]/15 border-b border-white/40">
                                         <th className="px-8 py-6 text-[10px] font-black text-[#201E43]/60 uppercase tracking-[0.2em]">Enrollment No</th>
                                         <th className="px-8 py-6 text-[10px] font-black text-[#201E43]/60 uppercase tracking-[0.2em]">Student Name</th>
-                                        <th className="px-8 py-6 text-[10px] font-black text-[#201E43]/60 uppercase tracking-[0.2em]">Email Address</th>
+                                        {/* <th className="px-8 py-6 text-[10px] font-black text-[#201E43]/60 uppercase tracking-[0.2em]">Email Address</th> */}
                                         <th className="px-8 py-6 text-[10px] font-black text-[#201E43]/60 uppercase tracking-[0.2em]">Phone</th>
                                         <th className="px-8 py-6 text-[10px] font-black text-[#201E43]/60 uppercase tracking-[0.2em]">Description</th>
                                         <th className="px-8 py-6 text-[10px] font-black text-[#201E43]/60 uppercase tracking-[0.2em] text-center">Actions</th>
@@ -78,9 +78,9 @@ export default async function StudentList() {
                                                         </div>
                                                     </div>
                                                 </td>
-                                                <td className="px-8 py-6">
+                                                {/* <td className="px-8 py-6">
                                                     <span className="text-sm font-bold text-[#201E43]/70">{student.Email}</span>
-                                                </td>
+                                                </td> */}
                                                 <td className="px-8 py-6">
                                                     <span className="text-sm font-bold text-[#201E43]/40 tabular-nums">{student.Phone}</span>
                                                 </td>
@@ -92,9 +92,9 @@ export default async function StudentList() {
                                                 </td>
                                                 <td className="px-8 py-6">
                                                     <div className="flex items-center justify-center gap-2.5">
-                                                        <button className="p-3 rounded-2xl bg-white/60 text-[#201E43]/70 hover:bg-[#201E43] hover:text-white transition-all duration-300 border border-white/80 shadow-sm hover:shadow-indigo-200 hover:-translate-y-0.5" title="View Details">
+                                                        <Link href={`/admin/students/${student.StudentID}`} className="p-3 rounded-2xl bg-white/60 text-[#201E43]/70 hover:bg-[#201E43] hover:text-white transition-all duration-300 border border-white/80 shadow-sm hover:shadow-indigo-200 hover:-translate-y-0.5" title="View Details">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                                        </button>
+                                                        </Link>
                                                         <button className="p-3 rounded-2xl bg-white/60 text-amber-600/70 hover:bg-amber-500 hover:text-white transition-all duration-300 border border-white/80 shadow-sm hover:shadow-amber-200 hover:-translate-y-0.5" title="Edit Student">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path><path d="m15 5 4 4"></path></svg>
                                                         </button>
