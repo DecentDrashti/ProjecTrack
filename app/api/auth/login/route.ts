@@ -49,12 +49,15 @@ export async function POST(req: Request) {
         const response = NextResponse.json({ role });
 
         // ✅ Set HTTP-Only Cookie
+        // --- EXPIRY LOGIC ---
+        const minutes = 30; 
+        const maxAgeInSeconds = minutes * 60; // Result: 1800
         response.cookies.set('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production', 
             sameSite: 'strict',
             path: '/',
-            maxAge: 3600 // 1 hour
+            maxAge: maxAgeInSeconds // 30 minutes
         });
 
         return response;

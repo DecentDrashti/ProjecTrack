@@ -126,6 +126,17 @@ model student {
   projectmeetingattendance projectmeetingattendance[]
 }
 
+model announcement {
+  AnnouncementID Int                        @id @default(autoincrement())
+  Title          String                     @db.VarChar(255)
+  Message        String                     @db.Text
+  TargetRole     announcement_TargetRole?   @default(ALL)
+  CreatedByRole  announcement_CreatedByRole
+  IsActive       Boolean?                   @default(true)
+  Created        DateTime?                  @default(now()) @db.DateTime(0)
+  Modified       DateTime?                  @default(now()) @db.DateTime(0)
+}
+
 enum projectgroup_ProjectStatus {
   PROPOSED
   APPROVED
@@ -137,4 +148,16 @@ enum projectgroup_ProjectStatus {
 enum staff_role {
   admin
   faculty
+}
+
+enum announcement_TargetRole {
+  STUDENT
+  FACULTY
+  ADMIN
+  ALL
+}
+
+enum announcement_CreatedByRole {
+  ADMIN
+  FACULTY
 }

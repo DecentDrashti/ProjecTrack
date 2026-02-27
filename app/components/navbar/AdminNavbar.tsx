@@ -59,7 +59,7 @@ const AdminNavbar = () => {
     const usersDropdownItems = [
         { name: "Faculty", href: "/admin/faculty", icon: Icons.Faculty },
         { name: "Students", href: "/admin/students", icon: Icons.Students },
-        { name: "Admin", href: "/admin/admin_list", icon: Icons.Admin },
+        { name: "Admin", href: "/admin/adminlist", icon: Icons.Admin },
     ];
 
     const profileDropdownItems = [

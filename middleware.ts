@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 2. If they are trying to go to a dashboard but have NO token, send them to login
-  if (pathname.startsWith('/dashboard') && !token) {
+  if (pathname.startsWith('/') && !token) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
@@ -23,13 +23,14 @@ export async function middleware(request: NextRequest) {
 
       // 4. Role-Based Access Control (The actual "Locking of Doors")
       // If a student tries to enter /dashboard/admin, kick them out!
-      if (pathname.startsWith('/dashboard/admin') && userRole !== 'admin') {
-        return NextResponse.redirect(new URL('/dashboard/student', request.url));
+
+      if (pathname.startsWith('/admin') && userRole !== 'admin') {
+        return NextResponse.redirect(new URL('/student', request.url));
       }
       
       
-      if (pathname.startsWith('/dashboard/faculty') && userRole !== 'faculty') {
-        return NextResponse.redirect(new URL('/dashboard/student', request.url));
+      if (pathname.startsWith('/faculty') && userRole !== 'faculty') {
+        return NextResponse.redirect(new URL('/student', request.url));
       }
     }
   } catch (error) {
@@ -42,5 +43,5 @@ export async function middleware(request: NextRequest) {
 
 // This tells Next.js: "Only run this guard on dashboard routes"
 export const config = {
-  matcher: ['/dashboard/:path*'],
+  matcher: ['/admin/:path*','/faculty/:path*', '/student/:path*'],// studnet is optional here add the paths which need login protection
 };
