@@ -10,49 +10,9 @@ export default async function Announcement() {
         }
     });
 
-    // Mock data for UI preview
-    const mockData: announcement[] = [
-        {
-            AnnouncementID: 9991,
-            Title: "Final Year Project Submission Deadline",
-            Message: "All final year students must submit their project reports by next Friday, March 7th. Please ensure all signatures from guides are obtained.",
-            TargetRole: 'STUDENT',
-            CreatedByRole: 'ADMIN',
-            IsActive: true,
-            Created: new Date("2026-02-20"),
-            Modified: new Date("2026-02-20")
-        },
-        {
-            AnnouncementID: 9992,
-            Title: "Faculty Coordination Meeting",
-            Message: "There will be a mandatory coordination meeting for all faculty members in the main seminar hall at 10:00 AM.",
-            TargetRole: 'FACULTY',
-            CreatedByRole: 'ADMIN',
-            IsActive: true,
-            Created: new Date("2026-02-25"),
-            Modified: new Date("2026-02-25")
-        },
-        {
-            AnnouncementID: 9993,
-            Title: "System Maintenance Update",
-            Message: "The ProjecTrack platform will be undergoing scheduled maintenance this Sunday from 2:00 AM to 4:00 AM.",
-            TargetRole: 'ALL',
-            CreatedByRole: 'ADMIN',
-            IsActive: false,
-            Created: new Date("2026-02-15"),
-            Modified: new Date("2026-02-15")
-        }
-    ];
-
-    // Combine real data with mock data for preview
-    const combinedData = [...announcementsData, ...mockData];
-
     // Sort in-memory to put active ones at the top as requested, without changing the database query structure
-    const data = combinedData.sort((a, b) => {
-        if (a.IsActive === b.IsActive) {
-            // Secondary sort by date if same status
-            return (b.Created?.getTime() || 0) - (a.Created?.getTime() || 0);
-        }
+    const data = [...announcementsData].sort((a, b) => {
+        if (a.IsActive === b.IsActive) return 0;
         return a.IsActive ? -1 : 1;
     });
 

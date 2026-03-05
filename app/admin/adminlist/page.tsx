@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
+import Link from "next/dist/client/link";
 
 export default async function AdminList() {
     const admins = await prisma.staff.findMany({
@@ -83,9 +84,9 @@ export default async function AdminList() {
                                                 </td>
                                                 <td className="px-8 py-6">
                                                     <div className="flex items-center justify-center gap-2.5">
-                                                        <button className="p-3 rounded-2xl bg-white/60 text-[#201E43]/70 hover:bg-[#201E43] hover:text-white transition-all duration-300 border border-white/80 shadow-sm hover:shadow-indigo-200 hover:-translate-y-0.5" title="View Details">
+                                                        <Link href={`/admin/adminlist/${admin.StaffID}`} className="p-3 rounded-2xl bg-white/60 text-[#201E43]/70 hover:bg-[#201E43] hover:text-white transition-all duration-300 border border-white/80 shadow-sm hover:shadow-indigo-200 hover:-translate-y-0.5" title="View Details">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                                        </button>
+                                                        </Link>
                                                         <button className="p-3 rounded-2xl bg-white/60 text-amber-600/70 hover:bg-amber-500 hover:text-white transition-all duration-300 border border-white/80 shadow-sm hover:shadow-amber-200 hover:-translate-y-0.5" title="Edit Admin">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path><path d="m15 5 4 4"></path></svg>
                                                         </button>

@@ -53,13 +53,14 @@ const AdminNavbar = () => {
 
     const navItems = [
         { name: "Dashboard", href: "/admin", icon: Icons.Dashboard },
-        { name: "Projects", href: "/admin/projects", icon: Icons.Projects },
+        { name: "Projects", href: "/admin/project", icon: Icons.Projects },
     ];
 
     const usersDropdownItems = [
+        { name: "Admin", href: "/admin/adminlist", icon: Icons.Admin },
         { name: "Faculty", href: "/admin/faculty", icon: Icons.Faculty },
         { name: "Students", href: "/admin/students", icon: Icons.Students },
-        { name: "Admin", href: "/admin/adminlist", icon: Icons.Admin },
+        
     ];
 
     const profileDropdownItems = [
@@ -177,7 +178,7 @@ const AdminNavbar = () => {
                     </div>
 
                     <Link
-                        href="/admin/announcements"
+                        href="/admin/announcement"
                         className={`flex items-center gap-2.5 px-4 py-2 rounded-xl transition-all duration-300 group ${pathname === "/admin/announcements"
                             ? "bg-[#201E43]/5 text-[#201E43]"
                             : "text-slate-500 hover:text-[#201E43] hover:bg-slate-50"

@@ -45,10 +45,10 @@ const FacultyNavbar = () => {
 
     const navItems = [
         { name: "Dashboard", href: "/faculty", icon: Icons.Dashboard },
-        { name: "My Supervisions", href: "/faculty/supervisions", icon: Icons.Supervision },
-        { name: "Project Reviews", href: "/faculty/reviews", icon: Icons.Reviews },
-        { name: "Meetings", href: "/faculty/meetings", icon: Icons.Meetings },
-        { name: "Announcements", href: "/faculty/announcements", icon: Icons.Announcements },
+        { name: "My Supervisions", href: "/faculty/supervision", icon: Icons.Supervision },
+        { name: "Project Reviews", href: "/faculty/review", icon: Icons.Reviews },
+        { name: "Meetings", href: "/faculty/meeting", icon: Icons.Meetings },
+        { name: "Announcements", href: "/faculty/announcement", icon: Icons.Announcements },
     ];
 
     const dropdownItems = [

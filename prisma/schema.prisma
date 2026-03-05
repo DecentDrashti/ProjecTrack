@@ -28,6 +28,7 @@ model projectgroup {
   staff_projectgroup_ExpertStaffIDTostaff   staff?                     @relation("projectgroup_ExpertStaffIDTostaff", fields: [ExpertStaffID], references: [StaffID], onDelete: Restrict, onUpdate: Restrict, map: "projectgroup_ibfk_3")
   projectgroupmember                        projectgroupmember[]
   projectmeeting                            projectmeeting[]
+  projectreview                             projectreview[]
 
   @@index([ConvenerStaffID], map: "ConvenerStaffID")
   @@index([ExpertStaffID], map: "ExpertStaffID")
@@ -110,6 +111,7 @@ model staff {
   projectgroup_projectgroup_ConvenerStaffIDTostaff projectgroup[]   @relation("projectgroup_ConvenerStaffIDTostaff")
   projectgroup_projectgroup_ExpertStaffIDTostaff   projectgroup[]   @relation("projectgroup_ExpertStaffIDTostaff")
   projectmeeting                                   projectmeeting[]
+  projectreview                                    projectreview[]
 }
 
 model student {
@@ -135,6 +137,23 @@ model announcement {
   IsActive       Boolean?                   @default(true)
   Created        DateTime?                  @default(now()) @db.DateTime(0)
   Modified       DateTime?                  @default(now()) @db.DateTime(0)
+}
+
+model projectreview {
+  ReviewID        Int          @id @default(autoincrement())
+  ProjectGroupID  Int
+  GuideStaffID    Int
+  ReviewDate      DateTime?    @default(now()) @db.DateTime(0)
+  ProgressSummary String?      @db.Text
+  ProgressPercent Int?
+  Remark          String?      @db.Text
+  Created         DateTime?    @default(now()) @db.DateTime(0)
+  Modified        DateTime?    @db.DateTime(0)
+  projectgroup    projectgroup @relation(fields: [ProjectGroupID], references: [ProjectGroupID], onUpdate: Restrict, map: "projectreview_ibfk_1")
+  staff           staff        @relation(fields: [GuideStaffID], references: [StaffID], onUpdate: Restrict, map: "projectreview_ibfk_2")
+
+  @@index([GuideStaffID], map: "GuideStaffID")
+  @@index([ProjectGroupID], map: "ProjectGroupID")
 }
 
 enum projectgroup_ProjectStatus {
