@@ -29,6 +29,8 @@ model projectgroup {
   projectgroupmember                        projectgroupmember[]
   projectmeeting                            projectmeeting[]
   projectreview                             projectreview[]
+  projecttask                               projecttask[]
+  projecttasksubmission                     projecttasksubmission[]
 
   @@index([ConvenerStaffID], map: "ConvenerStaffID")
   @@index([ExpertStaffID], map: "ExpertStaffID")
@@ -112,6 +114,7 @@ model staff {
   projectgroup_projectgroup_ExpertStaffIDTostaff   projectgroup[]   @relation("projectgroup_ExpertStaffIDTostaff")
   projectmeeting                                   projectmeeting[]
   projectreview                                    projectreview[]
+  projecttask                                      projecttask[]
 }
 
 model student {
@@ -126,6 +129,7 @@ model student {
   Password                 String?                    @db.VarChar(10)
   projectgroupmember       projectgroupmember[]
   projectmeetingattendance projectmeetingattendance[]
+  projecttasksubmission    projecttasksubmission[]
 }
 
 model announcement {
@@ -156,6 +160,40 @@ model projectreview {
   @@index([ProjectGroupID], map: "ProjectGroupID")
 }
 
+model projecttask {
+  ProjectTaskID         Int                     @id @default(autoincrement())
+  ProjectGroupID        Int
+  GuideStaffID          Int
+  Title                 String                  @db.VarChar(200)
+  Description           String?                 @db.Text
+  Deadline              DateTime                @db.DateTime(0)
+  projectgroup          projectgroup            @relation(fields: [ProjectGroupID], references: [ProjectGroupID], onDelete: Cascade, onUpdate: Restrict, map: "projecttask_ibfk_1")
+  staff                 staff                   @relation(fields: [GuideStaffID], references: [StaffID], onUpdate: Restrict, map: "projecttask_ibfk_2")
+  projecttasksubmission projecttasksubmission[]
+
+  @@index([GuideStaffID], map: "GuideStaffID")
+  @@index([ProjectGroupID], map: "ProjectGroupID")
+}
+
+model projecttasksubmission {
+  ProjectTaskSubmissionID Int                           @id @default(autoincrement())
+  ProjectTaskID           Int
+  StudentID               Int
+  ProjectGroupID          Int
+  FileUrl                 String                        @db.VarChar(255)
+  Remarks                 String?                       @db.Text
+  SubmittedAt             DateTime?                     @default(now()) @db.DateTime(0)
+  Status                  projecttasksubmission_Status? @default(SUBMITTED)
+  projecttask             projecttask                   @relation(fields: [ProjectTaskID], references: [ProjectTaskID], onDelete: Cascade, onUpdate: Restrict, map: "projecttasksubmission_ibfk_1")
+  student                 student                       @relation(fields: [StudentID], references: [StudentID], onUpdate: Restrict, map: "projecttasksubmission_ibfk_2")
+  projectgroup            projectgroup                  @relation(fields: [ProjectGroupID], references: [ProjectGroupID], onDelete: Cascade, onUpdate: Restrict, map: "projecttasksubmission_ibfk_3")
+
+  @@unique([ProjectTaskID, StudentID], map: "ProjectTaskID")
+  @@index([ProjectGroupID], map: "ProjectGroupID")
+  @@index([ProjectTaskID], map: "ProjectTaskID_2")
+  @@index([StudentID], map: "StudentID")
+}
+
 enum projectgroup_ProjectStatus {
   PROPOSED
   APPROVED
@@ -179,4 +217,10 @@ enum announcement_TargetRole {
 enum announcement_CreatedByRole {
   ADMIN
   FACULTY
+}
+
+enum projecttasksubmission_Status {
+  SUBMITTED
+  APPROVED
+  REJECTED
 }

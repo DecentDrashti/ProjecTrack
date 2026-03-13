@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 // Icons (SVG-based for zero dependencies and maximum performance)
 const Icons = {
@@ -37,8 +37,11 @@ const Icons = {
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
     )
 };
-
-const FacultyNavbar = () => {
+interface UserProps {
+    name: string;
+    email: string;
+}
+const FacultyNavbar = ({ user }: { user?: UserProps }) => {
     const pathname = usePathname();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -58,6 +61,7 @@ const FacultyNavbar = () => {
         { name: "Help", href: "/faculty/help", icon: Icons.Help },
         { name: "Logout", href: "/logout", icon: Icons.Logout, color: "text-rose-500" },
     ];
+
 
     // Close dropdown on outside click
     useEffect(() => {
@@ -129,19 +133,19 @@ const FacultyNavbar = () => {
                 <button
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                     className="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-slate-100 bg-slate-50/50 hover:bg-white hover:border-slate-200 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/10"
-                    aria-expanded={isDropdownOpen}
-                    aria-haspopup="true"
+                    // aria-expanded={isDropdownOpen}
+                    // aria-haspopup="true"
                 >
                     <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-white shadow-sm">
                         <img
-                            src="https://i.pravatar.cc/100?u=faculty"
+                            src={`https://i.pravatar.cc/100?u=${user?.email || 'default'}`}
                             alt="Faculty Avatar"
                             className="w-full h-full object-cover"
                         />
                     </div>
                     <div className="text-left hidden sm:block">
-                        <p className="text-sm font-bold text-[#201E43] leading-none">Prof. Rajesh K.</p>
-                        <p className="text-[10px] font-medium text-slate-400 mt-0.5">Senior Faculty</p>
+                        <p className="text-sm font-bold text-[#201E43] leading-none">{user?.name || "Faculty "}</p>
+                        <p className="text-[10px] font-medium text-slate-400 mt-0.5">{user?.email || "Verify Profile"}</p>
                     </div>
                     <svg className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
@@ -158,8 +162,8 @@ const FacultyNavbar = () => {
                     <div className="p-2 border-b border-slate-50 bg-slate-50/30">
                         <div className="px-3 py-2">
                             <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest leading-tight">Faculty Identity</p>
-                            <p className="text-sm font-bold text-[#201E43] mt-1">Dr. Rajesh Kumar</p>
-                            <p className="text-xs text-slate-500">rajesh.k@university.edu</p>
+                            <p className="text-sm font-bold text-[#201E43] mt-1">{user?.name}</p>
+                            <p className="text-xs text-slate-500">{user?.email}</p>
                         </div>
                     </div>
                     <div className="p-2">

@@ -88,7 +88,7 @@ const StudentNavbar = ({ user }: { user?: UserProps }) => {
     return (
         <nav className="fixed top-0 left-0 right-0 h-20 bg-white border-b border-slate-200/60 z-50 flex items-center justify-between px-8 md:px-12 backdrop-blur-md bg-white/80">
             <div className="flex items-center gap-12">
-                <Link href="/dashboard/student" className="flex items-center gap-2 group">
+                <Link href="/student" className="flex items-center gap-2 group">
                     <div className="w-10 h-10 rounded-xl overflow-hidden shadow-sm transition-transform group-hover:scale-105">
                         <img 
                             src="https://static.vecteezy.com/system/resources/previews/003/693/837/large_2x/p-letter-logo-icon-for-business-and-company-vector.jpg" 
@@ -102,7 +102,8 @@ const StudentNavbar = ({ user }: { user?: UserProps }) => {
                 <div className="hidden lg:flex items-center gap-1">
                     {navItems.map((item) => {
                         // Improved isActive logic for nested routes
-                        const isActive = pathname === item.href || (item.href !== '/dashboard/student' && pathname.startsWith(item.href));
+                        const isActive = pathname === item.href 
+                        // || (item.href !== '/student' && pathname.startsWith(item.href));
                         return (
                             <Link
                                 key={item.name}
@@ -111,7 +112,7 @@ const StudentNavbar = ({ user }: { user?: UserProps }) => {
                                     isActive ? "bg-[#201E43]/5 text-[#201E43]" : "text-slate-500 hover:text-[#201E43] hover:bg-slate-50"
                                 } font-semibold text-sm`}
                             >
-                                <span className={`${isActive ? "text-[#201E43]" : "text-slate-400 group-hover:text-[#201E43]"}`}>
+                                <span className={`${isActive ? "text-[#201E43]" : "text-slate-400 group-hover:text-[#201E43]"} transition-colors`}>
                                     <item.icon />
                                 </span>
                                 {item.name}

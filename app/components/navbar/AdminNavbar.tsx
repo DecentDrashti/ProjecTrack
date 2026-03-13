@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 // Icons (SVG-based for zero dependencies and maximum performance)
 const Icons = {
@@ -44,7 +44,12 @@ const Icons = {
     )
 };
 
-const AdminNavbar = () => {
+interface UserProps {
+    name: string;
+    email: string;
+}
+
+const AdminNavbar = ({ user }: { user?: UserProps }) => {
     const pathname = usePathname();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isUsersOpen, setIsUsersOpen] = useState(false);
@@ -69,6 +74,7 @@ const AdminNavbar = () => {
         { name: "Help", href: "/admin/help", icon: Icons.Help },
         { name: "Logout", href: "/logout", icon: Icons.Logout, color: "text-rose-500" },
     ];
+
 
     // Close dropdowns on outside click
     useEffect(() => {
@@ -95,7 +101,7 @@ const AdminNavbar = () => {
             document.removeEventListener("mousedown", handleClickOutside);
             document.removeEventListener("keydown", handleEscape);
         };
-    }, []);
+    }, [isProfileOpen]);
 
     return (
         <nav className="fixed top-0 left-0 right-0 h-20 bg-white border-b border-slate-200/60 z-50 flex items-center justify-between px-8 md:px-12 backdrop-blur-md bg-white/80">
@@ -184,11 +190,11 @@ const AdminNavbar = () => {
                             : "text-slate-500 hover:text-[#201E43] hover:bg-slate-50"
                             } font-semibold text-sm`}
                     >
-                        <span className={`${pathname === "/admin/announcements" ? "text-[#201E43]" : "text-slate-400 group-hover:text-[#201E43]"} transition-colors`}>
+                        <span className={`${pathname === "/admin/announcement" ? "text-[#201E43]" : "text-slate-400 group-hover:text-[#201E43]"} transition-colors`}>
                             <Icons.Announcements />
                         </span>
                         Announcements
-                        {pathname === "/admin/announcements" && (
+                        {pathname === "/admin/announcement" && (
                             <span className="w-1.5 h-1.5 rounded-full bg-[#201E43]" />
                         )}
                     </Link>
@@ -200,19 +206,19 @@ const AdminNavbar = () => {
                 <button
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
                     className="flex items-center gap-3 p-1.5 pr-4 rounded-full border border-slate-100 bg-slate-50/50 hover:bg-white hover:border-slate-200 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/10"
-                    aria-expanded={isProfileOpen}
-                    aria-haspopup="true"
+                    // aria-expanded={isProfileOpen}
+                    // aria-haspopup="true"
                 >
                     <div className="w-9 h-9 rounded-full overflow-hidden border-2 border-white shadow-sm ring-2 ring-indigo-500/10">
                         <img
-                            src="https://i.pravatar.cc/100?u=admin"
+                            src={`https://i.pravatar.cc/100?u=${user?.email || 'default'}`}
                             alt="Admin Avatar"
                             className="w-full h-full object-cover"
                         />
                     </div>
                     <div className="text-left hidden sm:block">
-                        <p className="text-sm font-bold text-[#201E43] leading-none">Admin Head</p>
-                        <p className="text-[10px] font-medium text-slate-400 mt-0.5">System Administrator</p>
+                        <p className="text-sm font-bold text-[#201E43] leading-none">{user?.name || "Admin "}</p>
+                        <p className="text-[10px] font-medium text-slate-400 mt-0.5">{user?.email || "Verify Profile"}</p>
                     </div>
                     <svg className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isProfileOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
@@ -229,8 +235,8 @@ const AdminNavbar = () => {
                     <div className="p-2 border-b border-slate-50 bg-slate-50/30">
                         <div className="px-3 py-2">
                             <p className="text-[11px] font-black text-slate-400 uppercase tracking-widest leading-tight">Admin Identity</p>
-                            <p className="text-sm font-bold text-[#201E43] mt-1">Super Administrator</p>
-                            <p className="text-xs text-slate-500">admin@university.edu</p>
+                            <p className="text-sm font-bold text-[#201E43] mt-1">{user?.name}</p>
+                            <p className="text-xs text-slate-500">{user?.email}</p>
                         </div>
                     </div>
                     <div className="p-2">

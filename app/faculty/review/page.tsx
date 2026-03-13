@@ -91,7 +91,7 @@ export default async function ReviewPage() {
 
                       <td className="px-8 py-6">
                         <span className="text-sm font-bold text-[#201E43]/60 tabular-nums">
-                          {review.ReviewDate?.toLocaleDateString() || "N/A"}
+                          {review.ReviewDate?.toLocaleDateString()}
                         </span>
                       </td>
 
@@ -117,7 +117,7 @@ export default async function ReviewPage() {
 
                       <td className="px-8 py-6 text-right">
                         <Link
-                          href={`/faculty/review/${review.ReviewID}`}
+                          href={`/faculty/review/${review.ProjectGroupID}`}
                           className="bg-[#201E43] text-white px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-tighter hover:scale-105 transition-transform inline-block shadow-lg shadow-[#201E43]/20"
                         >
                           View Details
