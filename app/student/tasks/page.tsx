@@ -74,7 +74,7 @@ export default async function TasksPage() {
       <header className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-black text-[#201E43]">Group Tasks</h1>
-          <p className="text-slate-500 font-medium tracking-tight">Project Group ID: {membership.ProjectGroupID}</p>
+          {/* <p className="text-slate-500 font-medium tracking-tight">Project Group ID: {membership.ProjectGroupID}</p> */}
         </div>
         <div className="text-right">
           <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Tasks</span>
@@ -87,43 +87,68 @@ export default async function TasksPage() {
           <p className="text-slate-400 font-bold italic">No tasks assigned yet.</p>
         </div>
       ) : (
-        <div className="grid gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
           {tasks.map((task) => {
             const submission = task.projecttasksubmission[0];
             const status = submission ? submission.Status : "PENDING";
 
             return (
-              <div key={task.ProjectTaskID} className="bg-white border border-slate-100 rounded-[2rem] p-8 shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div className="space-y-2 flex-1">
-                  <div className="flex items-center gap-3">
-                    <h2 className="font-black text-xl text-[#201E43]">{task.Title}</h2>
-                    <span className={`text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-tighter ${
-                      status === 'APPROVED' ? 'bg-emerald-100 text-emerald-600' : 
-                      status === 'SUBMITTED' ? 'bg-blue-100 text-blue-600' : 'bg-slate-100 text-slate-500'
+              <div key={task.ProjectTaskID} className="group bg-white border border-slate-100 rounded-[2rem] p-8 shadow-sm hover:shadow-2xl hover:shadow-indigo-500/5 hover:-translate-y-1 transition-all duration-300 flex flex-col items-start relative overflow-hidden">
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-gradient-to-br from-indigo-50 to-purple-50 rounded-full blur-3xl opacity-50 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                
+                <div className="relative z-10 flex flex-col w-full flex-1">
+                  {/* Top Section */}
+                  <div className="flex justify-between items-start gap-4 mb-6">
+                    <h2 className="font-extrabold text-2xl text-[#201E43] leading-tight flex-1">{task.Title}</h2>
+                    <span className={`text-[10px] font-black px-4 py-2 rounded-xl uppercase tracking-widest shrink-0 shadow-sm border ${
+                      status === 'APPROVED' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 
+                      status === 'REJECTED' ? 'bg-rose-50 text-rose-600 border-rose-100' :
+                      status === 'SUBMITTED' ? 'bg-blue-50 text-blue-600 border-blue-100' : 
+                      'bg-amber-50 text-amber-600 border-amber-100'
                     }`}>
                       {status}
                     </span>
                   </div>
-                  {task.Description && <p className="text-slate-600 text-sm leading-relaxed max-w-xl">{task.Description}</p>}
-                  <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-                    Deadline: <span className={new Date(task.Deadline) < new Date() ? 'text-red-500' : 'text-slate-600'}>
-                      {new Date(task.Deadline).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
-                    </span>
+
+                  {/* Middle Section */}
+                  <div className="space-y-6 flex-1 flex flex-col justify-start w-full">
+                    {task.Description && (
+                      <p className="text-slate-500 text-sm leading-relaxed line-clamp-3">{task.Description}</p>
+                    )}
+                    
+                    <div className="inline-flex items-center gap-2 bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-100 w-fit">
+                      <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                        Deadline: <span className={new Date(task.Deadline) < new Date() ? 'text-rose-500 font-black ml-1' : 'text-slate-700 font-black ml-1'}>
+                          {new Date(task.Deadline).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                        </span>
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  {submission ? (
-                    <div className="flex flex-col items-end gap-2">
-                      <a href={submission.FileUrl} target="_blank" className="bg-slate-50 border border-slate-200 text-slate-600 px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-slate-100 transition-all">
+                {/* Bottom Section */}
+                <div className="relative z-10 w-full pt-6 mt-8 border-t border-slate-100 flex justify-end">
+                  <div className="flex items-center gap-3">
+                    {submission ? (
+                      <a href={submission.FileUrl} target="_blank" className="inline-flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-600 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:border-slate-300 hover:bg-slate-50 transition-all hover:shadow-sm">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
                         View Submission
                       </a>
-                    </div>
-                  ) : (
-                    <button className="bg-indigo-600 text-white px-8 py-4 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-[#201E43] transition-all shadow-lg shadow-indigo-100">
-                      Upload Task
-                    </button>
-                  )}
+                    ) : (
+                      <button className="inline-flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-md hover:shadow-lg shadow-indigo-600/20">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                        </svg>
+                        Upload Task
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             );
