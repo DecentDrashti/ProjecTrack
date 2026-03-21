@@ -2,6 +2,7 @@ import { jwtVerify } from "jose";
 import { prisma } from "@/app/lib/prisma";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 async function getStudentProfile() {
     const cookieStore = await cookies();
@@ -67,13 +68,13 @@ export default async function ProfilePage() {
                 <div className="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-white overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-slate-300/50">
                     {/* Top Section / Avatar Banner */}
                     <div className="relative h-32 bg-gradient-to-r from-[#201E43] via-indigo-900 to-indigo-800">
-                      <div className="absolute -bottom-12 left-10">
-                        <div className="w-24 h-24 rounded-full bg-white p-1.5 shadow-lg border-4 border-white overflow-hidden">
-                          <div className="w-full h-full rounded-full bg-indigo-50 flex items-center justify-center text-3xl font-black text-indigo-600">
-                             {initials}
-                          </div>
+                        <div className="absolute -bottom-12 left-10">
+                            <div className="w-24 h-24 rounded-full bg-white p-1.5 shadow-lg border-4 border-white overflow-hidden">
+                                <div className="w-full h-full rounded-full bg-indigo-50 flex items-center justify-center text-3xl font-black text-indigo-600">
+                                    {initials}
+                                </div>
+                            </div>
                         </div>
-                      </div>
                     </div>
 
                     <div className="pt-16 pb-10 px-10">
@@ -86,30 +87,46 @@ export default async function ProfilePage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
                             <InfoField label="Enrollment Number" value={student.EnrollmentNo} />
                             <InfoField label="Phone Number" value={student.Phone || "Not provided"} />
-                            <InfoField label="Department" value="Computer Science & Engineering" /> { /* Defaulting based on context */ }
+                            <InfoField label="Department" value="Computer Science & Engineering" /> { /* Defaulting based on context */}
                             <InfoField label="Project Status" value={projectGroup?.ProjectStatus || "Unassigned"} />
-                            
+
                             {/* Project Details */}
                             <div className="col-span-1 md:col-span-2 mt-4 pt-8 border-t border-slate-100">
                                 <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-6">Group & Mentorship</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                                     <div className="bg-slate-50/50 p-5 rounded-3xl border border-slate-100 hover:border-indigo-100 hover:bg-white transition-all group">
-                                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Project Group</p>
-                                         <p className="text-lg font-black text-[#201E43] group-hover:text-indigo-600 transition-colors">
+                                    <div className="bg-slate-50/50 p-5 rounded-3xl border border-slate-100 hover:border-indigo-100 hover:bg-white transition-all group">
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Project Group</p>
+                                        <p className="text-lg font-black text-[#201E43] group-hover:text-indigo-600 transition-colors">
                                             {projectGroup?.ProjectGroupName || "Not Assigned"}
-                                         </p>
-                                     </div>
-                                     <div className="bg-slate-50/50 p-5 rounded-3xl border border-slate-100 hover:border-indigo-100 hover:bg-white transition-all group">
-                                         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Guide Faculty</p>
-                                         <p className="text-lg font-black text-[#201E43] group-hover:text-emerald-600 transition-colors">
+                                        </p>
+                                    </div>
+                                    <div className="bg-slate-50/50 p-5 rounded-3xl border border-slate-100 hover:border-indigo-100 hover:bg-white transition-all group">
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Guide Faculty</p>
+                                        <p className="text-lg font-black text-[#201E43] group-hover:text-emerald-600 transition-colors">
                                             {projectGroup?.GuideStaffName || "Allocating soon..."}
-                                         </p>
-                                     </div>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
+                             <div className="pt-8 border-t border-[#201E43]/5 flex flex-wrap gap-4">
+                        <Link
+                            href="/student/edit-profile"
+                            className="px-8 py-4 bg-[#201E43] text-white rounded-2xl font-black uppercase tracking-widest text-[11px] shadow-xl shadow-indigo-100 hover:scale-[1.02] transition-all flex items-center gap-2"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" /></svg>
+                            Edit Profile
+                        </Link>
+                        <Link
+                            href="/student"
+                            className="px-8 py-4 bg-white border border-slate-200 text-[#201E43] rounded-2xl font-black uppercase tracking-widest text-[11px] hover:bg-slate-50 transition-all"
+                        >
+                            Dashboard
+                        </Link>
+                    </div>
+
                         </div>
                     </div>
-                    
+                   
                     {/* Subtle footer accent */}
                     <div className="h-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
                 </div>
@@ -123,7 +140,7 @@ function InfoField({ label, value }: { label: string, value: string }) {
         <div className="space-y-1 group">
             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{label}</p>
             <p className="text-base font-bold text-[#201E43] pb-2 border-b border-transparent group-hover:border-slate-100 transition-all">
-               {value}
+                {value}
             </p>
         </div>
     );

@@ -167,22 +167,38 @@ const FacultyNavbar = ({ user }: { user?: UserProps }) => {
                         </div>
                     </div>
                     <div className="p-2">
-                        {dropdownItems.map((item, index) => (
-                            <Link
-                                key={item.name}
-                                href={item.href}
-                                onClick={() => setIsDropdownOpen(false)}
-                                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group ${item.name === "Logout"
-                                    ? "hover:bg-rose-50 text-rose-500"
-                                    : "hover:bg-indigo-50 text-slate-600 hover:text-indigo-600"
+                        {dropdownItems.map((item, index) => {
+                            const isItemActive = pathname === item.href;
+                            return (
+                                <Link
+                                    key={item.name}
+                                    href={item.href}
+                                    onClick={() => setIsDropdownOpen(false)}
+                                    className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group ${
+                                        item.name === "Logout"
+                                            ? "hover:bg-rose-50 text-rose-500"
+                                            : isItemActive
+                                                ? "bg-indigo-50 text-indigo-600 shadow-sm shadow-indigo-100"
+                                                : "hover:bg-slate-50 text-slate-600 hover:text-indigo-600"
                                     }`}
-                            >
-                                <span className={`${item.name === "Logout" ? "text-rose-400" : "text-slate-400 group-hover:text-indigo-500"} transition-colors`}>
-                                    <item.icon />
-                                </span>
-                                <span className="text-sm font-semibold">{item.name}</span>
-                            </Link>
-                        ))}
+                                >
+                                    <span className={`${
+                                        item.name === "Logout" 
+                                            ? "text-rose-400" 
+                                            : isItemActive 
+                                                ? "text-indigo-500" 
+                                                : "text-slate-400 group-hover:text-indigo-500"
+                                    } transition-colors`}>
+                                        <item.icon />
+                                    </span>
+                                    <span className={`text-sm ${isItemActive ? "font-black" : "font-semibold"}`}>{item.name}</span>
+                                    {isItemActive && item.name !== "Logout" && (
+                                        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-500"></div>
+                                    )}
+                                </Link>
+                            );
+                        })}
+
                     </div>
                 </div>
             </div>

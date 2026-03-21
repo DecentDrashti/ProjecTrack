@@ -48,8 +48,8 @@ export default function MeetingCalendar({ meetingDates }: MeetingCalendarProps) 
             </div>
             
             <div className="grid grid-cols-7 gap-1 text-center mb-4">
-                {['S','M','T','W','T','F','S'].map(d => (
-                    <div key={d} className="text-[9px] font-black text-[#201E43]/30 uppercase">{d}</div>
+                {['S','M','T','W','T','F','S'].map((d, i) => (
+                    <div key={i} className="text-[9px] font-black text-[#201E43]/30 uppercase">{d}</div>
                 ))}
             </div>
 
