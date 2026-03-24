@@ -3,7 +3,7 @@
 import { prisma } from "@/app/lib/prisma"; 
 import { revalidatePath } from "next/cache"; 
 import { redirect } from "next/navigation"; 
-import { AddFacultyAction } from "./AddFacultyAction";
+import bcrypt from 'bcrypt'; // 1. Import bcrypt
  
 async function AddAdminAction(formData: FormData){ 
     // console.log(formData) 
@@ -18,7 +18,10 @@ async function AddAdminAction(formData: FormData){
     const Description = DescriptionRaw?.trim() || null;
     const role = formData.get("role") as string;
  
-    const data = {StaffName, Email, Phone, Description, Password, Role: role}; 
+    // 2. 🛡️ Hash the password before saving
+    const hashedPassword = await bcrypt.hash(Password, 10);
+
+    const data = {StaffName, Email, Phone, Description, Password:hashedPassword, Role: role}; 
  
     await prisma.staff.create({data}); 
  

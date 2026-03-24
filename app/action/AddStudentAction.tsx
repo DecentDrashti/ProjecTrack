@@ -3,6 +3,7 @@
 import { prisma } from "@/app/lib/prisma"; 
 import { revalidatePath } from "next/cache"; 
 import { redirect } from "next/navigation"; 
+import bcrypt from 'bcrypt'; // 1. Import bcrypt
  
 async function AddStudentAction(formData: FormData){ 
     // console.log(formData) 
@@ -16,8 +17,12 @@ async function AddStudentAction(formData: FormData){
     // 👇 Make description optional
     const DescriptionRaw = formData.get("Description") as string;
     const Description = DescriptionRaw?.trim() || null;
- 
-    const data = {StudentName, EnrollmentNo, Email, Phone, Description, Password}; 
+    
+    // 2. 🛡️ Hash the password before saving
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(Password, saltRounds);
+
+    const data = {StudentName, EnrollmentNo, Email, Phone, Description, Password:hashedPassword}; 
  
     await prisma.student.create({data}); 
  

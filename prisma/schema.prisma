@@ -109,7 +109,7 @@ model staff {
   Description                                      String?          @db.Text
   Created                                          DateTime?        @default(now()) @db.DateTime(0)
   Modified                                         DateTime?        @db.DateTime(0)
-  Password                                         String?          @db.VarChar(10)
+  Password                                         String?          @db.VarChar(255)
   projectgroup_projectgroup_ConvenerStaffIDTostaff projectgroup[]   @relation("projectgroup_ConvenerStaffIDTostaff")
   projectgroup_projectgroup_ExpertStaffIDTostaff   projectgroup[]   @relation("projectgroup_ExpertStaffIDTostaff")
   projectmeeting                                   projectmeeting[]
@@ -126,7 +126,7 @@ model student {
   Description              String?                    @db.Text
   Created                  DateTime?                  @default(now()) @db.DateTime(0)
   Modified                 DateTime?                  @db.DateTime(0)
-  Password                 String?                    @db.VarChar(10)
+  Password                 String?                    @db.VarChar(255)
   projectgroupmember       projectgroupmember[]
   projectmeetingattendance projectmeetingattendance[]
   projecttasksubmission    projecttasksubmission[]
