@@ -110,7 +110,7 @@ async function getFacultyDashboardData() {
 
     // 3. Faculty Announcements
     const facultyAnnouncements = await prisma.announcement.findMany({
-        where: { CreatedByRole: 'FACULTY' },
+        where: { CreatedByRole: 'ADMIN' },
         orderBy: { Created: 'desc' },
         take: 3
     });
@@ -356,7 +356,7 @@ export default async function FacultyDashboard() {
                                     </div>
                                 )) : (
                                     <div className="text-center py-12 border-2 border-dashed border-slate-100 rounded-[2.5rem]">
-                                        <p className="text-xs text-slate-300 font-black italic uppercase tracking-widest">No Bulletins</p>
+                                        <p className="text-xs text-slate-300 font-black italic uppercase tracking-widest">No New Bulletins</p>
                                     </div>
                                 )}
                             </div>
