@@ -149,7 +149,7 @@ export default async function FacultyDashboard() {
                         </div>
                         <div className="space-y-1">
                             <h2 className="text-5xl font-black text-[#201E43] tracking-normal leading-tight">
-                                Welcome, <span className="bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">{faculty.StaffName.split(' ')}</span>
+                                Welcome, <span className="bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent">{faculty.StaffName.split(' ')[0]}</span>
                             </h2>
                             <p className="text-slate-500 font-bold text-lg max-w-xl border-l-4 border-indigo-100 pl-4 ml-1">
                                 Supervising {stats.totalGroups} research groups and academic progress.

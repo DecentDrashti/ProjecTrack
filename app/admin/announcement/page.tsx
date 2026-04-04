@@ -8,15 +8,8 @@ export default async function AdminAnnouncement() {
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
     const data = await prisma.announcement.findMany({
-        where: {
-            IsActive: true,
-            Created: {
-                gte: sevenDaysAgo
-            }
-        },
-        orderBy: {
-            Created: 'desc'
-        }
+        where: { CreatedByRole: 'ADMIN' },
+        orderBy: { Created: 'desc' },
     });
 
     return (
